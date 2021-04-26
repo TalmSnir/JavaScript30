@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>css variables and js</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="selectors">
+        <form action="#" class="inputs-container">
+          <label for="bg-clr">choose a color</label>
+          <input type="color" name="bg-clr" id="color-picker" value="#ffffff" />
+          <label for="blur-adjust">adjust image blur</label>
+          <input
+            type="range"
+            range="6"
+            value="0"
+            step="0.2"
+            name="blur-adjust"
+            id="blur-adjust"
+            data-sizing="px"
+          />
+          <label for="spacing">adjust spacing</label>
+          <input
+            type="range"
+            range="500"
+            value="30"
+            name="spacing"
+            id="spacing-adjust"
+            data-sizing="px"
+          />
+        </form>
+      </div>
+      <img src="car.jpg" alt="car-image" class="main-image" />
+    </div>
+
+    <style>
+      :root {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        --bg-clr: pink;
+        --blur-adjust: 0px;
+        --spacing: 0;
+      }
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100vw;
+        background: var(--bg-clr);
+        font-size: 2rem;
+      }
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5em;
+      }
+      input {
+        display: block;
+      }
+      input:hover {
+        cursor: pointer;
+      }
+
+      img {
+        filter: blur(var(--blur-adjust));
+        margin-top: 2em;
+        margin-left: var(--spacing);
+        border-radius: 15px;
+      }
+    </style>
+    <script>
+      const root = document.documentElement;
+      const inputs = document.querySelectorAll("input");
+
+      function adjustVar() {
+        root.style.setProperty(
+          `--${this.name}`,
+          this.value + (this.dataset.sizing || "")
+        );
+      }
+      inputs.forEach((input) => {
+        input.addEventListener("change", adjustVar);
+      });
+    </script>
+  </body>
+</html>
