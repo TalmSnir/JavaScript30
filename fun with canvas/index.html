@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>HTML5 Canvas</title>
+  </head>
+  <body>
+    <canvas
+      id="draw"
+      width="800"
+      height="600"
+      style="border: 2px solid black"
+    ></canvas>
+    <script></script>
+
+    <style>
+      html,
+      body {
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    </style>
+    <script>
+    const canvas=document.querySelector('#draw');
+    const ctx=canvas.getContext('2d');
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+    ctx.strokeStyle='blue';
+    ctx.lineWidth=5;
+    ctx.strokeStyle='#BADASS';
+    ctx.lineJoin='round';
+    ctx.lineCap='round';
+    
+
+function draw(e){
+    ctx.beginPath();
+    ctx.moveTo(e.clientX,e.clientY);
+    document.onmousemove=(e)=>{
+        
+        
+        ctx.lineTo(e.offsetX,e.offsetY);
+        ctx.stroke();
+    }
+    document.onmouseup=()=>{document.onmousemove=null
+    }
+}
+
+    canvas.addEventListener('mousedown', draw);
+    
+    
+    
+    
+    </script
+  </body>
+</html>
