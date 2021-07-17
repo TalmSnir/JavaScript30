@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Whack A Mole!</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>Whack-a-mole! <span class="score">0</span></h1>
+
+    <div class="game">
+      <div class="hole hole1">
+        <div class="mole"></div>
+      </div>
+      <div class="hole hole2">
+        <div class="mole"></div>
+      </div>
+      <div class="hole hole3">
+        <div class="mole"></div>
+      </div>
+      <div class="hole hole4">
+        <div class="mole"></div>
+      </div>
+      <div class="hole hole5">
+        <div class="mole"></div>
+      </div>
+      <div class="hole hole6">
+        <div class="mole"></div>
+      </div>
+    </div>
+
+    <button onClick="startGame()">Start!</button>
+    <script>
+      const holes = document.querySelectorAll(".hole");
+      const scoreBoard = document.querySelector(".score");
+      const moles = document.querySelectorAll(".mole");
+      const btn = document.querySelector("button");
+      let lastHole;
+      let timeUp = false;
+      let playTime;
+      let score = 0;
+      function randomTime(min, max) {
+        return Math.round(Math.random() * (max - min) + min);
+      }
+      function randomHole(holes) {
+        let idx;
+        let hole;
+        do {
+          idx = Math.floor(Math.random() * holes.length);
+          hole = holes[idx];
+        } while (hole == lastHole);
+
+        lastHole = hole;
+        return hole;
+      }
+      function peep() {
+        const time = randomTime(200, 1000);
+        const hole = randomHole(holes);
+        hole.classList.add("up");
+        setTimeout(() => {
+          hole.classList.remove("up");
+          if (!timeUp) {
+            peep();
+          }
+        }, time);
+      }
+      function whacked(e) {
+        if (e.isTrusted) {
+          score++;
+          this.classList.remove("up");
+          scoreBoard.textContent = score;
+        }
+      }
+
+      function startGame() {
+        score = 0;
+        scoreBoard.textContent = score;
+        timeUp = false;
+        playTime = 10;
+        btn.textContent = `time left:${playTime--}`;
+        const interval = setInterval(
+          () => (btn.textContent = `time left:${playTime--}`),
+          1000
+        );
+        peep();
+
+        setTimeout(() => {
+          timeUp = true;
+          btn.textContent = "Game Over, press to play again";
+          clearInterval(interval);
+        }, 10000);
+      }
+      moles.forEach((mole) => mole.addEventListener("click", whacked));
+    </script>
+  </body>
+</html>
